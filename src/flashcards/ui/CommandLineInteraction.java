@@ -83,8 +83,7 @@ public class CommandLineInteraction {
             String term = io.readLine();
 
             if (service.termExists(term)) {
-                io.writeLine(CommandLineResponses.termExistsError(term));
-                return;
+                throw new DuplicateTermException(term);
             }
             io.writeLine(CommandLineResponses.ADD_DEFINITION_REQUEST);
 
@@ -97,8 +96,9 @@ public class CommandLineInteraction {
             service.add(term, definition);
             var response = CommandLineResponses.pairAdded(term, definition);
             io.writeLine(response);
-        } catch (DuplicateTermException ignored) {
-
+        } catch (DuplicateTermException e) {
+            io.writeLine(CommandLineResponses.termExistsError(e.getMessage()));
+            return;
         } catch (DuplicateDefinitionException ignored) {
 
         }
