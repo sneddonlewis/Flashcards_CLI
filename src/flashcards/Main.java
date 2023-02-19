@@ -1,5 +1,7 @@
 package flashcards;
 
+import flashcards.repository.InMemoryCardRepository;
+
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -13,7 +15,7 @@ public class Main {
 
         var ui = new CommandLineInterface(
                 io,
-                new Cards(),
+                new InMemoryCardRepository(),
                 options
         );
 

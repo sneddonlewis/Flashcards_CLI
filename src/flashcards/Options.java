@@ -20,6 +20,7 @@ public class Options {
         this.exportFile = exportFile;
     }
 
+    // TODO handle index oob ex for bad cli args
     public static Options fromArgs(String[] args) {
         String importTemp = null;
         String exportTemp = null;

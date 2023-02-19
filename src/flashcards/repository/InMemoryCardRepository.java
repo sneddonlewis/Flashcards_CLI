@@ -1,15 +1,19 @@
-package flashcards;
+package flashcards.repository;
+
+import flashcards.Card;
+import flashcards.repository.CardRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Cards {
+public class InMemoryCardRepository implements CardRepository {
     private final Set<Card> data;
 
-    public Cards() {
+    public InMemoryCardRepository() {
         this.data = new HashSet<>();
     }
 
+    @Override
     public void add(String term, String definition) {
         if (termExists(term)) {
             throw new RuntimeException("Duplicate Term");
@@ -20,18 +24,22 @@ public class Cards {
         data.add(new Card(term, definition, 0));
     }
 
+    @Override
     public void delete(String term) {
         data.removeIf(c -> c.getTerm().equals(term));
     }
 
+    @Override
     public boolean termExists(String term) {
         return data.stream().anyMatch(c -> c.getTerm().equals(term));
     }
 
+    @Override
     public boolean definitionExists(String definition) {
         return data.stream().anyMatch(c -> c.getDefinition().equals(definition));
     }
 
+    @Override
     public int addMany(List<Card> cards) {
         cards.forEach(card -> {
             if (termExists(card.getTerm())) {
@@ -42,9 +50,11 @@ public class Cards {
         return cards.size();
     }
 
+    @Override
     public List<Card> getAsList() {
         return new ArrayList<>(data);
     }
+    @Override
     public String getTermForDefinition(String definition) {
         return data.stream()
                 .filter(e -> e.getDefinition().equals(definition))
@@ -53,6 +63,7 @@ public class Cards {
                 .getTerm();
     }
 
+    @Override
     public List<Card> getHardestCards() {
         int maxMistakes = data.stream().mapToInt(Card::getMistakeCount).max().orElse(0);
         if (maxMistakes == 0) {
@@ -63,6 +74,7 @@ public class Cards {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public boolean guess(Card card, String definitionGuess) {
         return data.stream()
                 .filter(c -> c.getTerm().equals(card.getTerm()))
@@ -71,6 +83,7 @@ public class Cards {
                 .guessTerm(definitionGuess);
     }
 
+    @Override
     public void incrementMistakeCount(Card card) {
         data.stream().filter(c -> c.getTerm().equals(card.getTerm()))
                 .findFirst()
@@ -78,6 +91,7 @@ public class Cards {
                 .incrementMistakeCount();
     }
 
+    @Override
     public void resetStatistics() {
         data.forEach(Card::resetMistakeCount);
     }

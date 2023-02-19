@@ -1,14 +1,16 @@
 package flashcards;
 
+import flashcards.repository.CardRepository;
+
 import java.io.IOException;
 import java.util.List;
 
 public class CommandLineInterface {
     private final UserInputOutput io;
-    private final Cards repository;
+    private final CardRepository repository;
     private final Options options;
 
-    public CommandLineInterface(UserInputOutput io, Cards repository, Options options) {
+    public CommandLineInterface(UserInputOutput io, CardRepository repository, Options options) {
         this.io = io;
         this.repository = repository;
         this.options = options;
