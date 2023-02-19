@@ -1,21 +1,21 @@
 package flashcards.ui;
 
+import flashcards.service.CardService;
 import flashcards.util.FileManager;
 import flashcards.configuration.Options;
 import flashcards.model.Card;
-import flashcards.repository.CardRepository;
 
 import java.io.IOException;
 import java.util.List;
 
 public class CommandLineInterface {
     private final UserInputOutput io;
-    private final CardRepository repository;
+    private final CardService service;
     private final Options options;
 
-    public CommandLineInterface(UserInputOutput io, CardRepository repository, Options options) {
+    public CommandLineInterface(UserInputOutput io, CardService service, Options options) {
         this.io = io;
-        this.repository = repository;
+        this.service = service;
         this.options = options;
     }
 
@@ -46,12 +46,12 @@ public class CommandLineInterface {
     }
 
     private void handleResetStats() {
-        repository.resetStatistics();
+        service.resetStatistics();
         io.writeLine(CommandLineResponses.RESET_STATS);
     }
 
     private void handleHardestCard() {
-        List<Card> hardestCards = repository.getHardestCards();
+        List<Card> hardestCards = service.getHardestCards();
         if (hardestCards.size() == 0) {
             io.writeLine(CommandLineResponses.NO_MISTAKES);
             return;
@@ -79,7 +79,7 @@ public class CommandLineInterface {
         io.writeLine(CommandLineResponses.ADD_TERM_REQUEST);
         String term = io.readLine();
 
-        if (repository.termExists(term)) {
+        if (service.termExists(term)) {
             io.writeLine(CommandLineResponses.termExistsError(term));
             return;
         }
@@ -87,11 +87,11 @@ public class CommandLineInterface {
 
         String definition = io.readLine();
 
-        if (repository.definitionExists(definition)) {
+        if (service.definitionExists(definition)) {
             io.writeLine(CommandLineResponses.definitionExistsError(definition));
             return;
         }
-        repository.add(term, definition);
+        service.add(term, definition);
         var response = CommandLineResponses.pairAdded(term, definition);
         io.writeLine(response);
     }
@@ -99,8 +99,8 @@ public class CommandLineInterface {
     private void handleRemove() {
         io.writeLine(CommandLineResponses.REMOVE_REQUEST);
         String card = io.readLine();
-        if (repository.termExists(card)) {
-            repository.delete(card);
+        if (service.termExists(card)) {
+            service.delete(card);
             io.writeLine(CommandLineResponses.REMOVED);
         } else {
             io.writeLine(CommandLineResponses.cannotRemove(card));
@@ -126,7 +126,7 @@ public class CommandLineInterface {
     // CardService method
     private int importFromFile(String filename) throws IOException {
         List<Card> cardsToAdd = FileManager.loadFromFile(filename);
-        return repository.addMany(cardsToAdd);
+        return service.addMany(cardsToAdd);
     }
 
     private void handleExport() {
@@ -143,7 +143,7 @@ public class CommandLineInterface {
 
     // CardService method
     private int persistToFile(String filename) {
-        List<Card> cards = repository.getAsList();
+        List<Card> cards = service.getAsList();
         FileManager.saveToFile(filename, cards);
         return cards.size();
     }
@@ -154,7 +154,7 @@ public class CommandLineInterface {
         assessUser(timesToAsk);
     }
     private void assessUser(int times) {
-        List<Card> cards = repository.getAsList();
+        List<Card> cards = service.getAsList();
         for (int i = 0; i < times; i++) {
             Card current = cards.get(i);
             io.writeLine(CommandLineResponses.askForDefinition(current.getTerm()));
@@ -164,16 +164,16 @@ public class CommandLineInterface {
         }
     }
     private String getResponseToGuess(Card currentCard, String guess) {
-        boolean result = repository.guess(currentCard, guess);
-        boolean definitionExists = repository.definitionExists(guess);
+        boolean result = service.guess(currentCard, guess);
+        boolean definitionExists = service.definitionExists(guess);
         if (result) {
             return CommandLineResponses.CORRECT;
         }
-        repository.incrementMistakeCount(currentCard);
+        service.incrementMistakeCount(currentCard);
         return definitionExists ?
                 CommandLineResponses.incorrectForTerm(
                         currentCard.getDefinition(),
-                        repository.getTermForDefinition(guess)
+                        service.getTermForDefinition(guess)
                 ) :
                 CommandLineResponses.incorrectForAnyTerm(currentCard.getDefinition());
     }

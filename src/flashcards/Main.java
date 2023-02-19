@@ -2,6 +2,8 @@ package flashcards;
 
 import flashcards.configuration.Options;
 import flashcards.repository.InMemoryCardRepository;
+import flashcards.service.CardService;
+import flashcards.service.CardServiceImpl;
 import flashcards.ui.CommandLineInterface;
 import flashcards.ui.UserInputOutput;
 import flashcards.util.Logger;
@@ -16,10 +18,13 @@ public class Main {
         Logger logger = new Logger(new LinkedList<>());
         UserInputOutput io = new UserInputOutput(logger, scanner);
         Options options = Options.fromArgs(args);
+        CardService service = new CardServiceImpl(
+                new InMemoryCardRepository()
+        );
 
         var ui = new CommandLineInterface(
                 io,
-                new InMemoryCardRepository(),
+                service,
                 options
         );
 
