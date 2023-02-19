@@ -1,4 +1,4 @@
-package flashcards;
+package flashcards.configuration;
 
 import java.util.Optional;
 

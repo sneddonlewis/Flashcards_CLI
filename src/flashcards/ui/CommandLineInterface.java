@@ -1,9 +1,9 @@
-package flashcards;
+package flashcards.ui;
 
+import flashcards.FileManager;
+import flashcards.configuration.Options;
 import flashcards.model.Card;
 import flashcards.repository.CardRepository;
-import flashcards.ui.CommandLineResponses;
-import flashcards.ui.UserInputOutput;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,6 +1,8 @@
 package flashcards;
 
+import flashcards.configuration.Options;
 import flashcards.repository.InMemoryCardRepository;
+import flashcards.ui.CommandLineInterface;
 import flashcards.ui.UserInputOutput;
 
 import java.util.LinkedList;
