@@ -1,4 +1,4 @@
-package flashcards;
+package flashcards.model;
 
 import java.io.Serial;
 import java.io.Serializable;

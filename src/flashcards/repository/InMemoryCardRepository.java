@@ -1,6 +1,6 @@
 package flashcards.repository;
 
-import flashcards.Card;
+import flashcards.model.Card;
 import flashcards.repository.CardRepository;
 
 import java.util.*;
