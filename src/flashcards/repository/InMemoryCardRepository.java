@@ -17,10 +17,10 @@ public class InMemoryCardRepository implements CardRepository {
     @Override
     public void add(String term, String definition) throws DuplicateTermException, DuplicateDefinitionException {
         if (termExists(term)) {
-            throw new DuplicateTermException();
+            throw new DuplicateTermException(term);
         }
         if (definitionExists(definition)) {
-            throw new DuplicateDefinitionException();
+            throw new DuplicateDefinitionException(definition);
         }
         data.add(new Card(term, definition, 0));
     }

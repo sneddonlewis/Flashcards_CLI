@@ -88,10 +88,6 @@ public class CommandLineInteraction {
             io.writeLine(CommandLineResponses.ADD_DEFINITION_REQUEST);
 
             String definition = io.readLine();
-
-            if (service.definitionExists(definition)) {
-                throw new DuplicateDefinitionException(definition);
-            }
             service.add(term, definition);
             var response = CommandLineResponses.pairAdded(term, definition);
             io.writeLine(response);
