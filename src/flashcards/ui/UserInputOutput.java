@@ -1,4 +1,6 @@
-package flashcards;
+package flashcards.ui;
+
+import flashcards.Logger;
 
 import java.util.List;
 import java.util.Scanner;

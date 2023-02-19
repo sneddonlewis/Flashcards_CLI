@@ -1,6 +1,7 @@
 package flashcards;
 
 import flashcards.repository.InMemoryCardRepository;
+import flashcards.ui.UserInputOutput;
 
 import java.util.LinkedList;
 import java.util.Scanner;
