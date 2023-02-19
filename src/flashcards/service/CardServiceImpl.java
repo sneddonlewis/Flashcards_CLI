@@ -2,7 +2,9 @@ package flashcards.service;
 
 import flashcards.model.Card;
 import flashcards.repository.CardRepository;
+import flashcards.util.FileManager;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CardServiceImpl implements CardService {
@@ -66,5 +68,18 @@ public class CardServiceImpl implements CardService {
     @Override
     public void resetStatistics() {
         repository.resetStatistics();
+    }
+
+    @Override
+    public int importFromFile(String filename) throws IOException {
+        List<Card> cardsToAdd = FileManager.loadFromFile(filename);
+        return repository.addMany(cardsToAdd);
+    }
+
+    @Override
+    public int persistToFile(String filename) {
+        List<Card> cards = repository.getAsList();
+        FileManager.saveToFile(filename, cards);
+        return cards.size();
     }
 }

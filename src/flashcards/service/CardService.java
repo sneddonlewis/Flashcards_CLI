@@ -2,6 +2,7 @@ package flashcards.service;
 
 import flashcards.model.Card;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface CardService {
@@ -26,4 +27,8 @@ public interface CardService {
     void incrementMistakeCount(Card card);
 
     void resetStatistics();
+
+    int importFromFile(String filename) throws IOException;
+
+    int persistToFile(String filename);
 }

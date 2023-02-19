@@ -115,18 +115,12 @@ public class CommandLineInteraction {
 
     private void handleImport(String filename) {
         try {
-            int numberAdded = importFromFile(filename);
+            int numberAdded = service.importFromFile(filename);
             String response = CommandLineResponses.cardsLoaded(numberAdded);
             io.writeLine(response);
         } catch (IOException ignored) {
             io.writeLine(CommandLineResponses.FILE_NOT_FOUND);
         }
-    }
-
-    // CardService method
-    private int importFromFile(String filename) throws IOException {
-        List<Card> cardsToAdd = FileManager.loadFromFile(filename);
-        return service.addMany(cardsToAdd);
     }
 
     private void handleExport() {
@@ -136,16 +130,9 @@ public class CommandLineInteraction {
     }
 
     private void handleExport(String filename) {
-        int persistedCardCount = persistToFile(filename);
+        int persistedCardCount = service.persistToFile(filename);
         String response = CommandLineResponses.cardsSaved(persistedCardCount);
         io.writeLine(response);
-    }
-
-    // CardService method
-    private int persistToFile(String filename) {
-        List<Card> cards = service.getAsList();
-        FileManager.saveToFile(filename, cards);
-        return cards.size();
     }
 
     private void handleAsk() {
