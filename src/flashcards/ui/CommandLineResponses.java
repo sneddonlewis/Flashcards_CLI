@@ -1,4 +1,4 @@
-package flashcards;
+package flashcards.ui;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
