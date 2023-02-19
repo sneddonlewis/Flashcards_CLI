@@ -6,6 +6,7 @@ import flashcards.util.FileManager;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CardServiceImpl implements CardService {
     private final CardRepository repository;
@@ -13,7 +14,6 @@ public class CardServiceImpl implements CardService {
     public CardServiceImpl(CardRepository repository) {
         this.repository = repository;
     }
-
 
     @Override
     public void add(String term, String definition) {
@@ -36,8 +36,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<Card> getAsList() {
-        return repository.getAsList();
+    public List<Card> getSome(int count) {
+        return repository.getAsList().stream().limit(count).collect(Collectors.toList());
     }
 
     @Override

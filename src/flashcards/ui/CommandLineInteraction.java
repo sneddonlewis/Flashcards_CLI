@@ -141,14 +141,12 @@ public class CommandLineInteraction {
         assessUser(timesToAsk);
     }
     private void assessUser(int times) {
-        List<Card> cards = service.getAsList();
-        for (int i = 0; i < times; i++) {
-            Card current = cards.get(i);
+        service.getSome(times).forEach(current -> {
             io.writeLine(CommandLineResponses.askForDefinition(current.getTerm()));
             String guess = io.readLine();
             String response = getResponseToGuess(current, guess);
             io.writeLine(response);
-        }
+        });
     }
     private String getResponseToGuess(Card currentCard, String guess) {
         boolean result = service.guess(currentCard, guess);

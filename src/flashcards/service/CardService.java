@@ -14,7 +14,7 @@ public interface CardService {
 
     boolean definitionExists(String definition);
 
-    List<Card> getAsList();
+    List<Card> getSome(int count);
 
     String getTermForDefinition(String definition);
 
