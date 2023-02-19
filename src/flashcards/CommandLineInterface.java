@@ -1,5 +1,6 @@
 package flashcards;
 
+import flashcards.model.Card;
 import flashcards.repository.CardRepository;
 
 import java.io.IOException;
@@ -48,19 +49,19 @@ public class CommandLineInterface {
     }
 
     private void handleHardestCard() {
-        List<flashcards.model.Card> hardestCards = repository.getHardestCards();
+        List<Card> hardestCards = repository.getHardestCards();
         if (hardestCards.size() == 0) {
             io.writeLine(CommandLineResponses.NO_MISTAKES);
             return;
         }
         if (hardestCards.size() == 1) {
-            flashcards.model.Card card = hardestCards.stream().findFirst().get();
+            Card card = hardestCards.stream().findFirst().get();
             var response = CommandLineResponses.hardestCard(card.getTerm(), card.getMistakeCount());
             io.writeLine(response);
             return;
         }
         var response = CommandLineResponses.hardestCards(
-                hardestCards.stream().map(flashcards.model.Card::getTerm),
+                hardestCards.stream().map(Card::getTerm),
                 hardestCards.stream().findFirst().orElseThrow().getMistakeCount());
         io.writeLine(response);
     }
@@ -122,7 +123,7 @@ public class CommandLineInterface {
 
     // CardService method
     private int importFromFile(String filename) throws IOException {
-        List<flashcards.model.Card> cardsToAdd = FileManager.loadFromFile(filename);
+        List<Card> cardsToAdd = FileManager.loadFromFile(filename);
         return repository.addMany(cardsToAdd);
     }
 
@@ -140,7 +141,7 @@ public class CommandLineInterface {
 
     // CardService method
     private int persistToFile(String filename) {
-        List<flashcards.model.Card> cards = repository.getAsList();
+        List<Card> cards = repository.getAsList();
         FileManager.saveToFile(filename, cards);
         return cards.size();
     }
@@ -151,16 +152,16 @@ public class CommandLineInterface {
         assessUser(timesToAsk);
     }
     private void assessUser(int times) {
-        List<flashcards.model.Card> cards = repository.getAsList();
+        List<Card> cards = repository.getAsList();
         for (int i = 0; i < times; i++) {
-            flashcards.model.Card current = cards.get(i);
+            Card current = cards.get(i);
             io.writeLine(CommandLineResponses.askForDefinition(current.getTerm()));
             String guess = io.readLine();
             String response = getResponseToGuess(current, guess);
             io.writeLine(response);
         }
     }
-    private String getResponseToGuess(flashcards.model.Card currentCard, String guess) {
+    private String getResponseToGuess(Card currentCard, String guess) {
         boolean result = repository.guess(currentCard, guess);
         boolean definitionExists = repository.definitionExists(guess);
         if (result) {
