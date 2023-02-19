@@ -14,10 +14,19 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args){
 
+        Options options;
+        try {
+            options = Options.fromArgs(args);
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+            // Incorrect command line args
+            // Print help and close exit
+            System.out.println("Usage text");
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
         Logger logger = new Logger(new LinkedList<>());
         UserInputOutput io = new UserInputOutput(logger, scanner);
-        Options options = Options.fromArgs(args);
         CardService service = new CardServiceImpl(
                 new InMemoryCardRepository()
         );

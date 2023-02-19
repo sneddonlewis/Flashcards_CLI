@@ -36,11 +36,6 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public int addMany(List<Card> cards) {
-        return repository.addMany(cards);
-    }
-
-    @Override
     public List<Card> getAsList() {
         return repository.getAsList();
     }
