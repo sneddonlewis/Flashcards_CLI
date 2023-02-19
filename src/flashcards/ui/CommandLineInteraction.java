@@ -8,12 +8,12 @@ import flashcards.model.Card;
 import java.io.IOException;
 import java.util.List;
 
-public class CommandLineInterface {
+public class CommandLineInteraction {
     private final UserInputOutput io;
     private final CardService service;
     private final Options options;
 
-    public CommandLineInterface(UserInputOutput io, CardService service, Options options) {
+    public CommandLineInteraction(UserInputOutput io, CardService service, Options options) {
         this.io = io;
         this.service = service;
         this.options = options;

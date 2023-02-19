@@ -4,7 +4,7 @@ import flashcards.configuration.Options;
 import flashcards.repository.InMemoryCardRepository;
 import flashcards.service.CardService;
 import flashcards.service.CardServiceImpl;
-import flashcards.ui.CommandLineInterface;
+import flashcards.ui.CommandLineInteraction;
 import flashcards.ui.UserInputOutput;
 import flashcards.util.Logger;
 
@@ -22,7 +22,7 @@ public class Main {
                 new InMemoryCardRepository()
         );
 
-        var ui = new CommandLineInterface(
+        var ui = new CommandLineInteraction(
                 io,
                 service,
                 options
