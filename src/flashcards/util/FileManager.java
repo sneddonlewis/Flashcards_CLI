@@ -1,4 +1,4 @@
-package flashcards;
+package flashcards.util;
 
 import flashcards.model.Card;
 

@@ -1,4 +1,4 @@
-package flashcards;
+package flashcards.util;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;

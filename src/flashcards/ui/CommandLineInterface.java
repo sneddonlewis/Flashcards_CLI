@@ -1,6 +1,6 @@
 package flashcards.ui;
 
-import flashcards.FileManager;
+import flashcards.util.FileManager;
 import flashcards.configuration.Options;
 import flashcards.model.Card;
 import flashcards.repository.CardRepository;

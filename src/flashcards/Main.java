@@ -4,6 +4,7 @@ import flashcards.configuration.Options;
 import flashcards.repository.InMemoryCardRepository;
 import flashcards.ui.CommandLineInterface;
 import flashcards.ui.UserInputOutput;
+import flashcards.util.Logger;
 
 import java.util.LinkedList;
 import java.util.Scanner;
