@@ -1,5 +1,7 @@
 package flashcards.repository;
 
+import flashcards.exception.DuplicateDefinitionException;
+import flashcards.exception.DuplicateTermException;
 import flashcards.model.Card;
 
 import java.util.*;
@@ -13,12 +15,12 @@ public class InMemoryCardRepository implements CardRepository {
     }
 
     @Override
-    public void add(String term, String definition) {
+    public void add(String term, String definition) throws DuplicateTermException, DuplicateDefinitionException {
         if (termExists(term)) {
-            throw new RuntimeException("Duplicate Term");
+            throw new DuplicateTermException();
         }
         if (definitionExists(definition)) {
-            throw new RuntimeException("Duplicate Definition");
+            throw new DuplicateDefinitionException();
         }
         data.add(new Card(term, definition, 0));
     }

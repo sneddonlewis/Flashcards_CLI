@@ -1,5 +1,7 @@
 package flashcards.service;
 
+import flashcards.exception.DuplicateDefinitionException;
+import flashcards.exception.DuplicateTermException;
 import flashcards.model.Card;
 import flashcards.repository.CardRepository;
 import flashcards.util.FileManager;
@@ -16,7 +18,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void add(String term, String definition) {
+    public void add(String term, String definition) throws DuplicateTermException, DuplicateDefinitionException {
         repository.add(term, definition);
     }
 
