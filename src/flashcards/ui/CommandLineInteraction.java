@@ -83,7 +83,8 @@ public class CommandLineInteraction {
             String term = io.readLine();
 
             if (service.termExists(term)) {
-                throw new DuplicateTermException(term);
+                io.writeLine(CommandLineResponses.termExistsError(term));
+                return;
             }
             io.writeLine(CommandLineResponses.ADD_DEFINITION_REQUEST);
 
@@ -92,11 +93,10 @@ public class CommandLineInteraction {
             var response = CommandLineResponses.pairAdded(term, definition);
             io.writeLine(response);
         } catch (DuplicateTermException e) {
+            assert false : "Reached expected unreachable code";
             io.writeLine(CommandLineResponses.termExistsError(e.getMessage()));
-            return;
         } catch (DuplicateDefinitionException e) {
             io.writeLine(CommandLineResponses.definitionExistsError(e.getMessage()));
-            return;
         }
     }
 
