@@ -1,12 +1,14 @@
 package flashcards.service;
 
+import flashcards.exception.DuplicateDefinitionException;
+import flashcards.exception.DuplicateTermException;
 import flashcards.model.Card;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface CardService {
-    void add(String term, String definition);
+    void add(String term, String definition) throws DuplicateTermException, DuplicateDefinitionException;
 
     void delete(String term);
 

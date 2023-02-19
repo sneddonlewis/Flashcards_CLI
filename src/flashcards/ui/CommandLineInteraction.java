@@ -1,5 +1,7 @@
 package flashcards.ui;
 
+import flashcards.exception.DuplicateDefinitionException;
+import flashcards.exception.DuplicateTermException;
 import flashcards.service.CardService;
 import flashcards.util.FileManager;
 import flashcards.configuration.Options;
@@ -76,24 +78,30 @@ public class CommandLineInteraction {
     }
 
     private void handleAdd() {
-        io.writeLine(CommandLineResponses.ADD_TERM_REQUEST);
-        String term = io.readLine();
+        try {
+            io.writeLine(CommandLineResponses.ADD_TERM_REQUEST);
+            String term = io.readLine();
 
-        if (service.termExists(term)) {
-            io.writeLine(CommandLineResponses.termExistsError(term));
-            return;
+            if (service.termExists(term)) {
+                io.writeLine(CommandLineResponses.termExistsError(term));
+                return;
+            }
+            io.writeLine(CommandLineResponses.ADD_DEFINITION_REQUEST);
+
+            String definition = io.readLine();
+
+            if (service.definitionExists(definition)) {
+                io.writeLine(CommandLineResponses.definitionExistsError(definition));
+                return;
+            }
+            service.add(term, definition);
+            var response = CommandLineResponses.pairAdded(term, definition);
+            io.writeLine(response);
+        } catch (DuplicateTermException ignored) {
+
+        } catch (DuplicateDefinitionException ignored) {
+
         }
-        io.writeLine(CommandLineResponses.ADD_DEFINITION_REQUEST);
-
-        String definition = io.readLine();
-
-        if (service.definitionExists(definition)) {
-            io.writeLine(CommandLineResponses.definitionExistsError(definition));
-            return;
-        }
-        service.add(term, definition);
-        var response = CommandLineResponses.pairAdded(term, definition);
-        io.writeLine(response);
     }
 
     private void handleRemove() {
@@ -140,8 +148,8 @@ public class CommandLineInteraction {
         int timesToAsk = Integer.parseInt(io.readLine());
         assessUser(timesToAsk);
     }
-    private void assessUser(int times) {
-        service.getSome(times).forEach(current -> {
+    private void assessUser(int count) {
+        service.getSome(count).forEach(current -> {
             io.writeLine(CommandLineResponses.askForDefinition(current.getTerm()));
             String guess = io.readLine();
             String response = getResponseToGuess(current, guess);
